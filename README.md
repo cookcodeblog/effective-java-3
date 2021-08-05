@@ -89,7 +89,82 @@
 
 示例代码：
 
-- [Item45Test.java](./src/test/java/cn/xdevops/ch7/lambdastream/Item44Test.java)
+- [Item45Test.java](./src/test/java/cn/xdevops/ch7/lambdastream/Item45Test.java)
+
+
+
+### 第46条：优先选择Stream中无副作用的函数
+
+
+
+- Stream pipeline的本质是无副作用的函数对象。
+- forEach操作应该只作用于报告Stream计算的结果，而不是执行计算。优先选择收集器（Collectors），而不是forEach在迭代中添加。
+- Stream的收集器（Collectors）：
+  - 收集器：
+    - toList() - 收集到List中
+    - toSet() - 收集到Set中
+    - toMap() - 收集到Map中
+- Stream的分组
+  - 使用分组函数groupingBy(f1, f2)
+  - f1(element) 为分组的key
+  - f2(element) 为分组的value
+  - 分组的结果为map<key, value>
+- Stream的计算函数：
+  - count() - 计算元素个数
+  - average() - 求平均值
+  - sum() - 求和
+  - min() - 最小值
+  - max() - 最大值
+- Stream的比较和排序：
+  - Stream.sorted()方法和Comparator.comparing(key)方法配合使用
+  - key为排序的key
+  - 支持comparing(key).reversed() 来降序排序（默认为升序）
+- joining() 方法用来将多个CharSequence合并成一个字符串，类似String.join()方法
+
+
+
+示例代码：
+
+- [Item46Test.java](./src/test/java/cn/xdevops/ch7/lambdastream/Item46Test.java)
+
+
+
+### 第47条：Stream要优先用Collection作为返回类型
+
+- Collection接口是Iterable的一个子类型，它有一个steam()方法，所以可以同时提供迭代和stream访问。
+- 数组通过Arrays.asList()和Stream.of()提供了简单的迭代和stream访问。
+- 标准集合的最大为2 ** 32 - 1个元素。
+- 如果要存放的元素特别多，且可以通过一些特殊技巧来简化，就可基于AbstractCollection和AbstractList自定义集合。
+
+
+
+示例代码：
+
+- [Item47Test.java](./src/test/java/cn/xdevops/ch7/lambdastream/Item47Test.java)
+
+
+
+
+
+### 第48条：谨慎使用Stream并行
+
+- 千万不要任意地并行Stream pipeline，可能会带来性能的灾难性后果。
+
+- 并行Stream不仅可能降低性能，包括活性失败，还可能导致结果出错，以及难以预计的行为。
+
+- 在Stream上通过并行获得的性能，最好是通过ArrayList、HashMap、HashSet和CorurrentHashMap实例、数组、Int范围和LongR范围等。这些数据结构的共性是可以被精确、轻松地分成任意大小的子范围，使并行线程中的分工变得更加轻松。
+
+- 具有最佳引用局部性的数据结构是基本类型数组，因为数据本身是相邻地保存在内存中的。
+
+- 并行的最佳终止操作是reduce()方法，或min、max、count和sum这类方法，骤死式操作的anyMatch、allMatch和noneMatch方法也可以并行。
+
+  
+
+示例代码：
+
+- [Item48Test.java](./src/test/java/cn/xdevops/ch7/lambdastream/Item48Test.java)
+
+
 
 
 
