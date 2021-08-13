@@ -14,6 +14,82 @@
 - Java 8
 - JUnit 5
 
+
+
+## 第5章 泛型
+
+### 第26条：请不要使用原生态类型 raw type
+
+
+
+不要使用原生态类型（raw type），会失掉了泛型（generic type）在安全性和描述性方面的所有优势。
+
+
+
+| 术语                                      | 范例                               | 读法                                           | 说明           |
+| ----------------------------------------- | ---------------------------------- | ---------------------------------------------- | -------------- |
+| 参数化的类型(parameterized type)          | `List<String>`                     | 字符串的列表                                   | 类型安全       |
+| 实际类型参数(actual type parameter)       | `String`                           | 字符串类型                                     |                |
+| 泛型 (generic type)                       | `List<E>`                          | E的列表                                        | 类型安全       |
+| 形式类型参数（type parameter)             | `E`                                | E类型                                          |                |
+| 无限制通配符类型(unbounded wildcard type) | `List<?>`                          | 某个类型的列表                                 | 类型安全       |
+| 原生态类型(raw type)                      | `List`                             | 列表                                           | **类型不安全** |
+| 有限制类型参数（bounded type parameter)   | `<E extends Number>`               | Number的子类型                                 | 类型安全       |
+| 递归类型限制                              | `<T extends Comparable<T>>`        |                                                | 类型安全       |
+| 有限制通配符类型(bounded wildcard type)   | `List<? extends Number>`           | Number的子类型的列表                           | 类型安全       |
+| 泛型方法(generic method)                  | `static <E> List<E> asList(E[] a)` | 静态asList方法，入参为E的数组，返回值为E的列表 | 类型安全       |
+| 类型令牌                                  | `String.class`                     |                                                |                |
+
+
+
+### 第27条：消除非受检（unchecked）的警告
+
+
+
+- 要尽可能地消除每一个非受检（unchecked）警告
+- 常用`<>` 操作符来消除非受检（unchecked）警告
+- 只有在确实必要时才使用`@SuppressWarnings("unchecked")` 来消除警告
+- 需要将消除警告范围控制到最小，并说明为什么要消除该警告
+
+
+
+### 第28条：列表优于数组
+
+
+
+- 数组和泛型不能很好地混合使用。
+- 列表可以和泛型很好地混合使用。
+- 相比数组，列表的代码可能会冗长一点，运行速度也会慢一点，但是更容易实现类型安全。
+- 优先使用列表+泛型。
+
+
+
+数组和列表互相转换：
+
+- 使用`Arrays.asList()` 方法将数组转换成列表
+- 使用列表对象的`toArray(new T[0]) ` 方法将列表转换成数组 
+
+
+
+References:
+
+- <https://www.baeldung.com/convert-array-to-list-and-list-to-array>
+
+
+
+### 第29条：优先考虑泛型
+
+- 使用泛型比在客户端代码中进行类型转换更加安全
+- 只要时间允许，都把现有的类型定义成泛型的
+
+
+
+示例代码：
+
+- [Item29Test.java](./src/test/java/cn/xdevops/ch5/generictype/Item29Test.java)
+
+
+
 ## 第7章 Lambda和Stream
 
 ### 第42条：Lambda优先于匿名类
